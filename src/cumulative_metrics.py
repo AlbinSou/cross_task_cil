@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import torch
 import os
 import matplotlib.pyplot as plt
@@ -9,7 +8,6 @@ import argparse
 import importlib
 import collections
 import itertools
-import ast
 
 import utils
 from datasets.data_loader import get_loaders
@@ -40,7 +38,6 @@ def iter_task_models(network_cls, taskcla, result_file):
             model = model.eval()
             model.to(device)
             yield model
-
             
 def get_accumulative_accuracies(test_loaders, taskcla, result_file, network_cls='resnet32'):
     """ Confusion matrix with progressively more classes considered """
@@ -66,9 +63,8 @@ def get_accumulative_accuracies(test_loaders, taskcla, result_file, network_cls=
             
     return accuracies
 
-
-def main(args):
-    result_file = args.load
+def extract_cumulative_accuracy(path):
+    """ Computes cumulative accuracy, the models need to be stored inside result_dir/models """
 
     def find(path, key):
         """ returns the first file containing key in its name """
@@ -77,7 +73,7 @@ def main(args):
                 if key in name:
                     return os.path.join(path, name)
                 
-    argfile = find(result_file, 'args')
+    argfile = find(path, 'args')
     print(f'Using config {argfile}')
 
     with open(argfile, 'r') as f:
@@ -88,26 +84,41 @@ def main(args):
         print(contents)
         argdict = eval(contents)
 
-        
     print(argdict)
     args = argparse.Namespace(**argdict)
 
     # Load the loaders
     utils.seed_everything(seed=args.seed)
-    trn_loader, val_loader, tst_loader, taskcla = \
-    get_loaders(args.datasets, args.num_tasks, \
-    args.nc_first_task, args.batch_size, num_workers=args.num_workers, \
-    pin_memory=args.pin_memory)
+    trn_loader, val_loader, tst_loader, taskcla = get_loaders(args.datasets, args.num_tasks, 
+    args.nc_first_task, args.batch_size, num_workers=args.num_workers, pin_memory=args.pin_memory)
     
     # Compute accuracies
-    accuracies = get_accumulative_accuracies(tst_loader, taskcla, result_file)
+    accuracies = get_accumulative_accuracies(tst_loader, taskcla, path, args.network)
     
-    acc_file = os.path.join(result_file, 'accumulative_accs')
-    print(f'Saved at {acc_file}')
-    np.save(acc_file, accuracies)
+    return accuracies
+
+def extract_forgetting(accs):
+    """ Compute forgetting matrices """
+    num_tasks = len(accs)
+    forgetting = np.zeros_like(accs)
+    for task_eval in range(num_tasks):
+        for task_train in range(task_eval + 1, num_tasks):
+            forgetting[task_train, task_eval] = np.max(accs[:task_train + 1, task_eval] - accs[task_train, task_eval])
+    return forgetting
+
+def main(args):
+    """ Computes both cumulative forgetting and accuracies, store them in the results path """
     
-if __name__ == "__main__":
+    accuracies = extract_cumulative_accuracy(args.load)
+    forgettings = extract_forgetting(accuracies)
+    
+    path = os.path.join(args.load, 'cumulative_accs')
+    np.save(path, accuracies)
+    path = os.path.join(args.load, 'cumulative_forg')
+    np.save(path, forgettings)
+
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('load', help='Experiment result directory from which to load the models')
+    parser.add_argument('load', type=str, help='result dir for which to compute the metrics (must be generated with --save-models option)')
     args = parser.parse_args()
     main(args)
