@@ -53,15 +53,15 @@ _**On the importance of cross-task features for class-incremental learning**_:
 
 * CIFAR-100 (10 and 20 tasks) with ResNet-32 with fixed and growing memory
 ```
-bash script_cifar100_bal_runs.sh {all/multi}_{grow/fixd} <gpu> <results_dir> {bal_ft/bal_joint} <num_tasks>
+bash script_cifar100.sh {ctf/noctf}_{grow/fixd} <gpu> <results_dir> <num_tasks>
 ```
 
 * ImageNet-Subset (25 tasks) with Resnet-18 and growing memory
 ```
-bash script_imagenet_subset.sh {all/multi}_{grow/fixd/joint} <gpu> <results_dir>
+bash script_imagenet_subset.sh {ctf/noctf}_{grow/joint} <gpu> <results_dir>
 ```
 
-Where "all" stands for +CFT and multi uses the multitask loss thus does not learn cross-task features (-CTF).
+Where "ctf" stands for +CFT and "noctf" uses the multitask loss thus does not learn cross-task features (-CTF). Each of these can be combined with either growing memory (i.e ctf_grow) or fixed memory (ctf_fixd). For the upper bounds, use (i.e ctf_joint) instead.
 
 Our provided results are an average of 10 runs. Check out all available in the [scripts](./scripts) folder.
 
