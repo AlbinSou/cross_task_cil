@@ -1,5 +1,5 @@
-# Framework for Analysis of Class-Incremental Learning
-Run the code with:
+# Cross-task class-incremental learning
+Following [FACIL](https://github.com/mmasana/FACIL), run the code with:
 ```
 python3 -u src/main_incremental.py
 ```
@@ -10,52 +10,30 @@ followed by general options:
 * `--exp-name`: experiment name (default=None)
 * `--seed`: random seed (default=0)
 * `--save-models`: save trained models (default=False)
-* `--last-layer-analysis`: plot last layer analysis (default=False)
 * `--no-cudnn-deterministic`: disable CUDNN deterministic (default=False)
 
 and specific options for each of the code parts (corresponding to folders):
   
-* `--approach`: learning approach used (default='finetuning') [[more](approaches/README.md)]
+* `--approach`: learning approach used (default='bal_ft') [[more](approach/README.md)]
 * `--datasets`: dataset or datasets used (default=['cifar100']) [[more](datasets/README.md)]
 * `--network`: network architecture used (default='resnet32') [[more](networks/README.md)]
 * `--log`: loggers used (default='disk') [[more](loggers/README.md)]
 
 go to each of their respective readme to see all available options for each of them.
 
-## Approaches
-Initially, the approaches included in the framework correspond to the ones presented in
-_**Class-incremental learning: survey and performance evaluation**_ (preprint , 2020). The regularization-based
-approaches are EWC, MAS, PathInt, LwF, LwM and DMC (green). The rehearsal approaches are iCaRL, EEIL and RWalk (blue).
-The bias-correction approaches are IL2M, BiC and LUCIR (orange).
+## Metrics
+We provide implementation of our proposed new metrics:
 
-![alt text](../docs/_static/cil_survey_approaches.png "Survey approaches")
+* Cumulative accuracy
+* Cumulative forgetting
 
-More approaches will be included in the future. To learn more about them refer to the readme in
-[src/approaches](approaches).
-
-## Datasets
-To learn about the dataset management refer to the readme in [src/datasets](datasets).
-
-## Networks
-To learn about the different torchvision and custom networks refer to the readme in [src/networks](networks).
-
-## GridSearch
-We implement the option to use a realistic grid search for hyperparameters which only takes into account the task at
-hand, without access to previous or future information not available in the incremental learning scenario. It
-corresponds to the one introduced in _**Class-incremental learning: survey and performance evaluation**_. The GridSearch
-can be applied by using:
-
-* `--gridsearch-tasks`: number of tasks to apply GridSearch (-1: all tasks) (default=-1)
-
-which we recommend to set to the total number of tasks of the experiment for a more realistic setting of the correct 
-learning rate and possible forgetting-intransigence trade-off. However, since this has a considerable extra 
-computational cost, it can also be set to the first 3 tasks, which would fix those hyperparameters for the remaining 
-tasks. Other GridSearch options include:
-
-* `--gridsearch-config`: configuration file for GridSearch options (default='gridsearch_config') [[more](gridsearch_config.py)]
-* `--gridsearch-acc-drop-thr`: GridSearch accuracy drop threshold (default=0.2)
-* `--gridsearch-hparam-decay`:  GridSearch hyperparameter decay (default=0.5)
-* `--gridsearch-max-num-searches`: GridSearch maximum number of hyperparameter search (default=7)
+They can be computed using
+```
+python cumulative_metrics.py <path_to_result_dir>
+```
+Where `<path_to_result_dir>` is a directory containing the results from a training session. They will then be stored as
+numpy arrays inside `<path_to_result_dir>`. Note that the results dir need to contain model history inside the `models/`
+folder, this can be done when training using the `--save-models` option.
 
 ## Utils
-We have some utility functions added into `utils.py`.
+Some utility are available in `utils.py`.

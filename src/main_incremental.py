@@ -33,8 +33,6 @@ def main(argv=None):
                         help='Loggers used (disk, tensorboard) (default=%(default)s)', nargs='*', metavar="LOGGER")
     parser.add_argument('--save-models', action='store_true',
                         help='Save trained models (default=%(default)s)')
-    parser.add_argument('--last-layer-analysis', action='store_true',
-                        help='Plot last layer analysis (default=%(default)s)')
     parser.add_argument('--no-cudnn-deterministic', action='store_true',
                         help='Disable CUDNN deterministic (default=%(default)s)')
     # dataset args

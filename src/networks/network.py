@@ -88,8 +88,3 @@ class LLL_Net(nn.Module):
         for m in self.model.modules():
             if isinstance(m, nn.BatchNorm2d):
                 m.eval()
-
-    def _initialize_weights(self):
-        """Initialize weights using different strategies"""
-        # TODO: add different initialization strategies
-        pass

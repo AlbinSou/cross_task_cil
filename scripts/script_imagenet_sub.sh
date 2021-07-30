@@ -1,12 +1,7 @@
 #!/bin/bash
 
-# $1 GPU, $2 all/multi, $3 results dir
+# $1 GPU, $2 {ctf/noctf}_{grow/joint}, $3 results dir
 
-#if [ "$1" != "" ]; then
-#    echo "Running approach: $1"
-#else
-#    echo "No approach has been assigned."
-#fi
 if [ "$1" != "" ]; then
     echo "Running on gpu: $1"
 else
@@ -29,29 +24,29 @@ echo "Results dir: $RESULTS_DIR"
 #for SEED in 0 1 2 3 4 5 6 7 8 9
 for SEED in 0
 do
-  if [ "$2" = "all_joint" ]; then
-          PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name all_${SEED} \
+  if [ "$2" = "ctf_joint" ]; then
+          PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name ctf_gs_${SEED} \
                  --datasets imagenet_subset --num-tasks 25 --network resnet18 --seed $SEED \
                  --nepochs 100 --batch-size 256 --results-path $RESULTS_DIR \
                  --gridsearch-tasks 25 --gridsearch-config gridsearch_config \
                  --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
                  --approach bal_joint --gpu $1 --save-models
-  elif [ "$2" = "multi_joint" ]; then
-          PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name multi_${SEED} \
+  elif [ "$2" = "noctf_joint" ]; then
+          PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name noctf_gs_${SEED} \
                  --datasets imagenet_subset --num-tasks 25 --network resnet18 --seed $SEED \
                  --nepochs 100 --batch-size 256 --results-path $RESULTS_DIR \
                  --gridsearch-tasks 25 --gridsearch-config gridsearch_config \
                  --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
                  --approach bal_joint --gpu $1 --save-models --multi-loss --num-epochs-ft 10
-  elif [ "$2" = "all_grow" ]; then
-          PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name all_${SEED} \
+  elif [ "$2" = "ctf_grow" ]; then
+          PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name ctf_grow_gs_${SEED} \
                  --datasets imagenet_subset --num-tasks 25 --network resnet18 --seed $SEED \
                  --nepochs 100 --batch-size 256 --results-path $RESULTS_DIR \
                  --gridsearch-tasks 25 --gridsearch-config gridsearch_config \
                  --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
                  --approach bal_ft --gpu $1 --save-models --num-exemplars-per-class 20 --num-epochs-ft 25 --exemplar-selection herding --reinit-heads
-  elif [ "$2" = "multi_grow" ]; then
-          PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name multi_${SEED} \
+  elif [ "$2" = "noctf_grow" ]; then
+          PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name noctf_grow_gs_${SEED} \
                  --datasets imagenet_subset --num-tasks 25 --network resnet18 --seed $SEED \
                  --nepochs 100 --batch-size 256 --results-path $RESULTS_DIR \
                  --gridsearch-tasks 25 --gridsearch-config gridsearch_config \
