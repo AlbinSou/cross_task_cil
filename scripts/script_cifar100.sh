@@ -25,60 +25,48 @@ echo "Results dir: $RESULTS_DIR"
 for SEED in 0 1 2 3 4 5 6 7 8 9
 do
     if [ "$1" = "ctf_fixd" ]; then
-        for EXEMPLARS in 2000 1000 500 200
-        do
-            PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name ctf_fixd_gs_${EXEMPLARS}_${SEED} \
-                   --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
-                   --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR --save-models \
-                   --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
-                   --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
-                   --approach bal_ft --gpu $2 --num-epochs-ft 20 \
-                   --num-exemplars $EXEMPLARS --exemplar-selection herding
-        done
+        PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name ctf_fixd_gs_${$4}tsk_${SEED} \
+               --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
+               --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR \
+               --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
+               --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
+               --approach bal_ft --gpu $2 --num-epochs-ft 20 \
+               --num-exemplars 2000 --exemplar-selection herding
     elif [ "$1" = "noctf_fixd" ]; then
-        for EXEMPLARS in 2000 1000 500 200
-        do
-            PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name noctf_fixd_gs_${EXEMPLARS}_${SEED} \
-                   --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
-                   --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR --save-models \
-                   --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
-                   --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
-                   --approach bal_ft --gpu $2 --num-epochs-ft 20 --multi-loss \
-                   --num-exemplars $EXEMPLARS --exemplar-selection herding
-        done
+        PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name noctf_fixd_gs_${$4}tsk_${SEED} \
+               --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
+               --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR \
+               --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
+               --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
+               --approach bal_ft --gpu $2 --num-epochs-ft 20 --multi-loss \
+               --num-exemplars 2000 --exemplar-selection herding
     elif [ "$1" = "ctf_grow" ]; then
-        for EXEMPLARS in 20 10 5 2
-        do
-            PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name ctf_grow_gs_${EXEMPLARS}_${SEED} \
-                   --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
-                   --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR --save-models \
-                   --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
-                   --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
-                   --approach bal_ft --gpu $2 --num-epochs-ft 20 \
-                   --num-exemplars-per-class $EXEMPLARS --exemplar-selection herding
-        done
+        PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name ctf_grow_gs_${$4}tsk_${SEED} \
+               --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
+               --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR \
+               --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
+               --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
+               --approach bal_ft --gpu $2 --num-epochs-ft 20 \
+               --num-exemplars-per-class 20 --exemplar-selection herding
     elif [ "$1" = "noctf_grow" ]; then
-        for EXEMPLARS in 20 10 5 2
-        do
-            PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name noctf_grow_gs_${EXEMPLARS}_${SEED} \
-                   --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
-                   --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR --save-models \
-                   --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
-                   --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
-                   --approach bal_ft --gpu $2 --num-epochs-ft 20 --multi-loss \
-                   --num-exemplars-per-class $EXEMPLARS --exemplar-selection herding
-        done
+        PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name noctf_grow_gs_${$4}tsk_${SEED} \
+               --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
+               --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR \
+               --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
+               --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
+               --approach bal_ft --gpu $2 --num-epochs-ft 20 --multi-loss \
+               --num-exemplars-per-class 20 --exemplar-selection herding
     elif [ "$1" = "noctf_joint" ]; then
-        PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name noctf_gs_${SEED} \
+        PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name noctf_gs_${$4}tsk_${SEED} \
                  --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
-                 --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR --save-models \
+                 --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR \
                  --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
                  --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
                  --approach bal_joint --gpu $2 --num-epochs-ft 20 --multi-loss --reinit-heads
     elif [ "$1" = "ctf_joint" ]; then
-        PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name ctf_gs_${SEED} \
+        PYTHONPATH=$SRC_DIR python3 -u $SRC_DIR/main_incremental.py --exp-name ctf_gs_${$4}tsk_${SEED} \
                  --datasets cifar100_icarl --num-tasks $4 --network resnet32 --seed $SEED \
-                 --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR --save-models \
+                 --nepochs 200 --batch-size 128 --results-path $RESULTS_DIR \
                  --gridsearch-tasks $4 --gridsearch-config gridsearch_config \
                  --gridsearch-acc-drop-thr 0.2 --gridsearch-hparam-decay 0.5 \
                  --approach bal_joint --gpu $2 --num-epochs-ft 20 --reinit-heads
