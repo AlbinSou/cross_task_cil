@@ -1,6 +1,6 @@
 # Cross-task class-incremental learning
 Implementation of "[On the importance of cross-task features for class-incremental learning](https://drive.google.com/file/d/1Ygg18cKyTFXjBChung4uHs58w2bHYY_X/view)" 
-[[Supplementary](https://drive.google.com/file/d/1npoxgZL43FIq0p4coIqxQ0xITgfAMzE0/view)][[arXiv](https://arxiv.org/abs/2106.11930)][[Poster](./docs/poster_icml.pdf)]
+[[Suppl.](https://drive.google.com/file/d/1npoxgZL43FIq0p4coIqxQ0xITgfAMzE0/view)][[arXiv](https://arxiv.org/abs/2106.11930)][[Poster](./docs/poster_ICML_workshop_2021.pdf)]
 
 Accepted at the International Conference on Machine Learning Workshop (ICML-W) on
 [Theory and Foundation of Continual Learning](https://sites.google.com/view/cl-theory-icml2021), 2021.
@@ -37,6 +37,8 @@ cd cross_task_cil
 
 </details>
 
+Set up your data path by modifying `_BASE_DATA_PATH` in `./src/datasets/dataset_config.py`.
+
 To run the basic code:
 ```
 python3 -u src/main_incremental.py
@@ -51,8 +53,7 @@ _**On the importance of cross-task features for class-incremental learning**_:
 
 * CIFAR-100 (10 tasks) with ResNet-32 with fixed and growing memory
 
-All scripts run 10 times to later calculate mean and standard deviation of the results.
-Check out all available in the [scripts](./scripts) folder.
+Our provided results are an average of 10 runs. Check out all available in the [scripts](./scripts) folder.
 
 ## License
 Please check the MIT license that is listed in this repository.
