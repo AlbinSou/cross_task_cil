@@ -10,14 +10,23 @@ Learning approach which learns each task incrementally while not using any data 
 default, weights corresponding to the outputs of previous classes are not updated. This can be changed by using
 `--all-outputs`. This approach allows the use of exemplars.
 
-## Incremental Joint Training
-`--approach joint`
-
-Learning approach which has access to all data from previous tasks and serves as an upperbound baseline. Joint training 
-can be combined with Freezing by using `--freeze-after num_task (int)`. However, this option is disabled (default=-1).
-
 ## FT BAL
 `--approach bal_ft`
 
+Learning approach that implements both baselines from the paper. 
+
+The following options are of importance
+
+* `--multi-loss` When used, activates the multi-task loss (version of the baseline that does not learn the cross-task features)
+* `--num-exemplars-per-class` Precise the number of exemplars per class to be used (growing memory) (default=20)
+* `--num-exemplars` Precise the total number of exemplars to be used (fixed memory)
+* `--num-epochs-ft` Precise the number of finetuning epochs to be performed (default=10)
+
+
 ## Joint BAL
 `--approach bal_joint`
+
+Learning approach that serves as an upper bound for the baselines, this is equivalent to using the baselines with the maximum amount of memory.
+
+* `--multi-loss` When used, activates the multi-task loss (version of the baseline that does not learn the cross-task features)
+* `--num-epochs-ft` Precise the number of finetuning epochs to be performed (default=10)
