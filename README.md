@@ -7,7 +7,7 @@ To appear in the International Conference on Machine Learning Workshop (ICML-W) 
 
 We use python with anaconda to manage packages. To make sure you are using the same environment as we were, run
 
-´´´
+´´´{r}
 conda env create -f environment.yml
 ´´´
 
