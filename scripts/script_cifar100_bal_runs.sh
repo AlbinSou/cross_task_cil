@@ -13,7 +13,7 @@ SRC_DIR="$PROJECT_DIR/src"
 echo "Project dir: $PROJECT_DIR"
 echo "Sources dir: $SRC_DIR"
 
-if [ "$3" == "bal_ft" ] || [ "$3" == "bal_lwf" ] || [ "$3" == "bal_joint" ]; then
+if [ "$3" == "bal_ft" ] || [ "$3" == "bal_joint" ]; then
   echo "Running for approach: $3"
 else
   echo "No approach has been assigned or that approach is not available for BALANCING."
