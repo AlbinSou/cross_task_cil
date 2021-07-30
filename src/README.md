@@ -27,5 +27,14 @@ We provide implementation of our proposed new metrics:
 * Cumulative accuracy
 * Cumulative forgetting
 
+They can be computed using
+
+```
+python cumulative_metrics.py <path_to_result_dir>
+```
+
+Where <path_to_result_dir> is a directory containing the results from a training session. They will then be stored as numpy arrays inside <path_to_result_dir>. Note that the results dir need to contain model history inside the models/ folder, this can be done when training using the --save-models option.
+
+
 ## Utils
 Some utility are available in `utils.py`.
