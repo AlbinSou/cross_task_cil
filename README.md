@@ -43,9 +43,8 @@ To run the basic code:
 ```
 python3 -u src/main_incremental.py
 ```
-More options are explained in [FACIL](https://github.com/mmasana/FACIL). Also, more specific options on approaches,
-loggers, datasets and networks are available on the corresponding `README.md` in the
-[FACIL](https://github.com/mmasana/FACIL) subfolders.
+More options are explained in the FACIL framework. Also, more specific options on approaches, loggers, datasets and
+networks are available on the corresponding `README.md` in the FACIL subfolders.
 
 ## Reproduction of the results
 We provide scripts to reproduce the specific scenarios proposed in 
