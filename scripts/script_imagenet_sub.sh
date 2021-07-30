@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# $1 GPU, $2 {ctf/noctf}_{joint_grow}, $3 results dir
+# $1 GPU, $2 {ctf/noctf}_{grow/joint}, $3 results dir
 
 if [ "$1" != "" ]; then
     echo "Running on gpu: $1"
